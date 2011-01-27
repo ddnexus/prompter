@@ -212,11 +212,11 @@ class Prompter
     # @param [Hash] opts the standard opts to pass along (see #say)
     #
     # @yield yields the block when the answer is no
-    # @return [Boolean] true for 'y' and false for 'n'
+    # @return [Boolean] true for 'n' and false for 'y'
     #
     def no?(prompt, opts={})
       result = yes_no? prompt, opts
-      (block_given? && !result) ? yield : result
+      (block_given? && !result) ? yield : !result
     end
 
     # Chooses among different choices in an indexed list
