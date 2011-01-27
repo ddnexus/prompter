@@ -1,0 +1,10 @@
+extend Prompter::Methods
+
+desc "simple choice"
+yes_no? "Chose Y or N (choose Y)"
+_eql?( true )
+
+desc "simple choice with default"
+yes_no? "Chose Y or N (type <enter> for Y)", :default => "Y"
+_eql?( true )
+

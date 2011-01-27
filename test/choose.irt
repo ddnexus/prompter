@@ -1,0 +1,29 @@
+extend Prompter::Methods
+
+desc "simple choice with lambda"
+choose "Choose from a, b or c (choose something different from a|b|c first, then choose 'b')", lambda{|v| v.match(/^(a|b|c)$/i)}, :hint => "[a|b|c]"
+_eql?( "b" )
+
+desc "simple choice with default and RE"
+choose "Choose from [a|b|c] (type <enter> for 'b')", /^(a|b|c)$/i, :default => "b"
+_eql?( "b" )
+
+desc "choose index"
+choose_index "Chose one of... (type '3')", %w[alpha beta gamma delta]
+_eql?( 2 )
+
+desc "chose many"
+choose_many "Chose one or more among [a|b|c] (type 'b c')", /^(a|b|c)$/i
+_eql?( %w[b c] )
+
+desc "chose many different split"
+choose_many "Chose one or more among [a b c] (type 'b;c')", /^(a|b|c)$/i, :split => ';'
+_eql?( %w[b c] )
+
+desc "chose many index"
+choose_many_index "Chose one or more... (type '2 3')", %w[alpha beta gamma delta]
+_eql?( [1, 2] )
+
+desc "chose many index different split RE"
+choose_many_index "Chose one or more... (type '2;3')", %w[alpha beta gamma delta], :split => /;/
+_eql?( [1, 2] )

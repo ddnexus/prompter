@@ -1,0 +1,38 @@
+extend Prompter::Methods
+
+desc "intaractive ask"
+say "You should see the next line in :ask_style"
+ask "Please, write the word 'pippo':"
+_eql?( "pippo" )
+
+Colorer.def_basic_styles :red, true
+desc "intaractive default ask"
+say "You should see the next line in :red, and padded with 4 spaces"
+ask "Please, type <enter>:", :default => 'default', :style => :red, :prefix => '    '
+_eql?( "default" )
+
+desc "ask_multiline default"
+say "Please, enter some multiline data"
+ml = ask_multiline "Add your data below..."
+_eql?( ml )
+say "<START-INPUT>#{ml}<END-INPUT>"
+
+desc "ask_multiline with <END> input_end, no hints"
+say "Please, enter some multiline data"
+ml = ask_multiline "Add your data below (no hints)... and type <END> to end the input",
+     :input_end => '<END>',
+     :hint => ''
+_eql?( ml )
+say "<START-INPUT>#{ml}<END-INPUT>"
+
+desc "ask_multiline with <END> input_end and hints"
+say "Please, enter some multiline data"
+ml = ask_multiline "Add your data below...",
+     :hint => '[end the input by typing <END> in a new line]',
+     :input_end => '<END>'
+_eql?( ml )
+say "<START-INPUT>#{ml}<END-INPUT>"
+
+
+irt
+

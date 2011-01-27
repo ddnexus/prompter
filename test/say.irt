@@ -1,0 +1,90 @@
+
+desc "say no options"
+capture {Prompter.say "test"}
+_eql?( "test\n" )
+
+desc "say with final space"
+capture {Prompter.say "test "}
+_eql?( "test " )
+
+desc "say without force_new_line"
+capture {Prompter.say "test", :force_new_line => false}
+_eql?( "test" )
+
+desc "prefix default"
+Prompter.prefix = "--- "
+capture { Prompter.say "prefix test" }
+_eql? <<EOS
+--- prefix test
+EOS
+
+desc "prefix override"
+capture { Prompter.say "prefix test", :prefix => ""}
+_eql? <<EOS
+prefix test
+EOS
+
+desc "style override"
+Colorer.def_basic_styles :magenta
+capture { Prompter.say "style override", :style => :magenta }
+_eql?( "--- \e[0m\e[35mstyle override\e[0m\n" )
+
+class ExtendedByPrompter
+extend Prompter::Methods
+include Prompter::Methods
+
+  def self.something
+    say "something easy"
+  end
+
+  def something
+    say "something easy"
+  end
+
+  def self.other_padded
+    say "something not padded", :prefix => ""
+  end
+
+end
+
+ExtendedByPrompter.prefix = "*** "
+desc "prefix new default in extended class"
+capture { ExtendedByPrompter.something }
+_eql?( "*** something easy\n" )
+
+desc "prefix override in extended class"
+capture { ExtendedByPrompter.other_padded }
+_eql? <<EOS
+something not padded
+EOS
+
+obj = ExtendedByPrompter.new
+desc "object prefix is default"
+obj.prefix
+_eql?( "" )
+
+desc "object method included"
+capture { obj.something }
+_eql? <<EOS
+something easy
+EOS
+
+desc "say no style"
+capture { Prompter.say "no style", :style => nil }
+_eql? <<EOS
+--- no style
+EOS
+
+desc "alert sound with say_warning"
+Prompter.say_warning "You should hear a sound with this message"
+Prompter.yes_no? "Did you hear it?"
+_eql?( true )
+
+desc "silend say_warning"
+Prompter.say_warning "This should be silent", :mute=>true
+Prompter.yes_no? "Was it silent?"
+_eql?( true )
+
+desc "alert sound with yes/no question"
+Prompter.yes_no? "\aThis is embedded in the question: did you hear it"
+_eql?( true )

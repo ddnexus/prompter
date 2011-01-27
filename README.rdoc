@@ -1,0 +1,54 @@
+= Prompter
+
+Makes your prompts easier to build and prettier to look.
+
+== Synopsis
+
+    require 'prompter'
+
+    Prompter.new(:prefix => '**  ') do |p|
+      p.say_notice 'You can avoid to extend your class with Prompter::Methods'
+    end
+
+    # or
+
+    prompter = Prompter.new
+
+    # or you can also extend your modules with:
+
+    extend Prompter::Methods
+    self.prefix = '    '
+    say 'This part uses imported method from Prompter::Methods'
+
+    ask 'Type some input:' do |input|
+      yes_no? "Do you want it or not?" do |yes|
+        if yes
+          say("#{input} is ok")
+        else
+          say_warning("#{input} may be dangerous")
+        end
+      end
+    end
+
+    # or
+
+    name = ask('write your name:')
+    yes? "are you sure?" { do_something_if_yes }
+
+(see also the file "examples/wizard.rb")
+
+== General Notes
+
+Methods are callable directly on the Prompter class, on a Prompter object, included in your class as instance methods or class methods.
+
+Some methods yield the block with the returned value, so you can use them as an easy way to construct hierarchical wizards.
+
+Colorer styles are passable as an option to the called method, and can be redefined entirely by calling Colorer.def_*_styles.
+
+== Documentation and Example
+
+All the methods are yard-documented, and there is and 'example/wizard.rb' that could be useful.
+
+== Copyright
+
+Copyright (c) 2010 Domizio Demichelis. See LICENSE for details.
