@@ -1,4 +1,4 @@
-require 'colorer'
+require 'dye'
 
 # @author Domizio Demichelis
 #
@@ -6,18 +6,23 @@ class Prompter
 
   VERSION = File.read(File.expand_path('../../VERSION', __FILE__)).strip
 
-  Colorer.def_custom_styles :say_style         => nil,
-                            :say_echo_style    => nil,
-                            :say_notice_style  => :yellow,
-                            :say_warning_style => :red,
-                            :ask_style         => :magenta,
-                            :hint_style        => :green
+  class << self ; attr_accessor :dye_styles ; end
+
+  @dye_styles = { :say_style         => nil,
+                  :say_echo_style    => nil,
+                  :say_notice_style  => :yellow,
+                  :say_warning_style => :red,
+                  :ask_style         => :magenta,
+                  :hint_style        => :green }
 
   # Standard constructor, also accepts a block
   #
   # @param [Hash] opts The options to create a Prompter object.
   # @option opts [String] :prefix The prefix string
   # @option opts [Boolean] :echo when true adds a line with the result
+  #
+  # @yield yields the block with self
+  # @yieldparam [Prompter]
   #
   def initialize(opts={})
     @prefix = opts[:prefix]
@@ -26,6 +31,8 @@ class Prompter
   end
 
   module Methods
+
+    define_dye_method Prompter.dye_styles
 
     attr_writer :echo, :prefix
 
@@ -47,7 +54,7 @@ class Prompter
     # @option opts [String] :prefix The prefix string
     # @option opts [Boolean] :echo Adds a line showing the input (=> input)
     # @option opts [String] :hint A string to show the available choices
-    # @option opts [Symbol] :style The Colorer style name to use for this prompt
+    # @option opts [Symbol] :style The Dye style name to use for this prompt
     # @option opts [Boolean] :force_new_line Forces the addition of a new line (otherwise determined by the end of the prompt string)
     #
     def say(message="", opts={})
@@ -55,7 +62,7 @@ class Prompter
       opts = { :force_new_line => (message !~ /( |\t)$/),
                :style          => :say_style,
                :prefix         => prefix }.merge opts
-      message = message.send opts[:style] unless opts[:style].nil?
+      message = dye(message, *opts[:style]) unless opts[:style].nil?
       message = (opts[:prefix]||'') + message
       $stdout.send((opts[:force_new_line] ? :puts : :print), message)
       $stdout.flush

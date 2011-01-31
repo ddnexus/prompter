@@ -25,7 +25,6 @@ prefix test
 EOS
 
 desc "style override"
-Colorer.def_basic_styles :magenta
 capture { Prompter.say "style override", :style => :magenta }
 _eql?( "--- \e[0m\e[35mstyle override\e[0m\n" )
 

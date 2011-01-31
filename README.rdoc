@@ -43,7 +43,8 @@ Methods are callable directly on the Prompter class, on a Prompter object, inclu
 
 Some methods yield the block with the returned value, so you can use them as an easy way to construct hierarchical wizards.
 
-Colorer styles are passable as an option to the called method, and can be redefined entirely by calling Colorer.def_*_styles.
+The Prompter.dye_styles keys are passable as the :style option to the called method and will override the default styles,
+They can also be redefined by setting the Prompter.dye_styles. (see the 'dye' gem for more info)
 
 == Documentation and Example
 
