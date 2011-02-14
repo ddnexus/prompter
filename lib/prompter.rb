@@ -110,8 +110,7 @@ class Prompter
       input = $stdin.gets || '' # multilines ended at start generate a nil
       input.strip!
       input = opts[:default].to_s if input.empty?
-      opts.delete(:style) # :style is not passed
-      say_echo input, opts
+      say_echo(input, opts) unless opts[:echo] == false || echo == false
       block_given? ? yield(input) : input
     end
 
@@ -267,10 +266,10 @@ class Prompter
 
     # used internally to show a feedback of the input
     def say_echo(result, opts={})
+      opts.delete(:style) # :style is not passed
       opts = { :style  => :say_echo_style,
-               :echo   => echo,
                :prefix => ' ' * prefix.to_s.size }.merge opts
-      say( ('=> ' + result.inspect), opts ) if opts[:echo]
+      say( ('=> ' + result.inspect), opts )
       result
     end
 
