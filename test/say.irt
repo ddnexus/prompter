@@ -26,7 +26,7 @@ EOS
 
 desc "style override"
 capture { Prompter.say "style override", :style => :magenta }
-_eql?( "--- \e[0m\e[35mstyle override\e[0m\n" )
+_eql?( "\e[0m\e[35m--- style override\e[0m\n" )
 
 class ExtendedByPrompter
 extend Prompter::Methods

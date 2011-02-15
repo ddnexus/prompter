@@ -62,8 +62,8 @@ class Prompter
       opts = { :force_new_line => (message !~ /( |\t)$/),
                :style          => :say_style,
                :prefix         => prefix }.merge opts
-      message = dye(message, *opts[:style]) unless opts[:style].nil?
       message = (opts[:prefix]||'') + message
+      message = dye(message, *opts[:style]) unless opts[:style].nil?
       $stdout.send((opts[:force_new_line] ? :puts : :print), message)
       $stdout.flush
     end
@@ -276,8 +276,8 @@ class Prompter
     # used internally to show the hints
     def say_hint(hint, opts={})
       return if hint.empty?
-      opts.merge!( { :style  => :hint_style} ) # hint is always :hint_style
-      opts = {:prefix => '' }.merge opts
+      # hint is always :hint_style with no prefix
+      opts.merge! :style  => :hint_style, :prefix => ''
       hint = hint + ' ' unless opts[:force_new_line]
       say hint, opts
     end
