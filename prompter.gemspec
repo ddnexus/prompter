@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.date = Date.today.to_s
 
   s.required_rubygems_version = ">= 1.3.6"
+  s.extra_rdoc_files = ["README.rdoc"]
   s.has_rdoc = 'yard'
   s.require_paths = ["lib"]
 

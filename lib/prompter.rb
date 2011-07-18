@@ -12,6 +12,7 @@ class Prompter
                   :say_echo_style    => nil,
                   :say_notice_style  => :yellow,
                   :say_warning_style => :red,
+                  :say_title_style   => [:cyan, :bold, :reversed],
                   :ask_style         => :magenta,
                   :hint_style        => :green }
 
@@ -86,6 +87,16 @@ class Prompter
       opts = { :style => :say_warning_style }.merge opts
       message = "\a" + message unless opts[:mute]
       say message, opts
+    end
+
+    # Shows a colored message. It adds a new line and a space before and after the message
+    # and uses :say passing the :say_title_style :style option
+    #
+    # @see #say
+    #
+    def say_title(message="", opts={})
+      opts = { :style => :say_title_style }.merge opts
+      say "\n #{message} \n", opts
     end
 
     # Asks for an input
@@ -290,7 +301,7 @@ class Prompter
     end
 
     def list_choices(prompt, list, opts={}, many=false)
-      hint = many ? "[choose one or more in range 1..#{list.size} (#{opts[:split].nil? ? '<space>' : opts[:split].inspect} splitted)]" :
+      hint = many ? "[choose one or more in range 1..#{list.size} (#{opts[:split].nil? ? '<space>' : opts[:split].inspect} separated)]" :
                     "[choose one in range 1..#{list.size}]"
       opts = { :style => :ask_style,
                :hint  => hint }.merge opts
