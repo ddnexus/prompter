@@ -52,4 +52,4 @@ All the methods are yard-documented, and there is and 'example/wizard.rb' that c
 
 == Copyright
 
-Copyright (c) 2010 Domizio Demichelis. See LICENSE for details.
+Copyright (c) 2010-2012 Domizio Demichelis. See LICENSE for details.
