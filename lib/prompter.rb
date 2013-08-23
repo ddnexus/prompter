@@ -10,6 +10,8 @@ class Prompter
 
   @dye_styles = { :say_style         => nil,
                   :say_echo_style    => nil,
+                  :say_ok_style      => :green,
+                  :say_log_style     => :blue,
                   :say_notice_style  => :yellow,
                   :say_warning_style => :red,
                   :say_title_style   => [:cyan, :bold, :reversed],
@@ -67,6 +69,24 @@ class Prompter
       message = dye(message, *opts[:style]) unless opts[:style].nil?
       $stdout.send((opts[:force_new_line] ? :puts : :print), message)
       $stdout.flush
+    end
+
+    # Shows a colored message. It uses :say passing the :say_ok_style :style option
+    #
+    # @see #say
+    #
+    def say_ok(message="", opts={})
+      opts = { :style => :say_ok_style }.merge opts
+      say message, opts
+    end
+
+    # Shows a colored message. It uses :say passing the :say_log_style :style option
+    #
+    # @see #say
+    #
+    def say_log(message="", opts={})
+      opts = { :style => :say_log_style }.merge opts
+      say message, opts
     end
 
     # Shows a colored message. It uses :say passing the :say_notice_style :style option
